@@ -1,0 +1,50 @@
+<mat-toolbar color="primary">
+  <span>Quote Viewer</span>
+  <span class="spacer" style="flex: 1 1 auto;"></span>
+
+  <!-- Show login form if not logged in -->
+  <ng-container *ngIf="!userEmail">
+    <mat-form-field appearance="fill" style="margin-right: 8px; width: 200px;">
+      <mat-label>Username</mat-label>
+      <input matInput [(ngModel)]="username">
+    </mat-form-field>
+    <mat-form-field appearance="fill" style="margin-right: 8px; width: 200px;">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" [(ngModel)]="password">
+    </mat-form-field>
+    <button mat-raised-button color="accent" (click)="login()">Login</button>
+  </ng-container>
+
+  <!-- Show user email and logout button if logged in -->
+  <ng-container *ngIf="userEmail">
+    <span style="margin-right: 16px;">{{ userEmail }}</span>
+    <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+  </ng-container>
+</mat-toolbar>
+
+<div class="container" style="padding: 16px;">
+  <mat-card>
+    <mat-card-title>Quote</mat-card-title>
+    <mat-card-content>
+      <!-- Show spinner while loading -->
+      <ng-container *ngIf="loading">
+        <mat-spinner diameter="40"></mat-spinner>
+      </ng-container>
+
+      <!-- Show error message if any -->
+      <ng-container *ngIf="!loading && errorMessage">
+        <p class="error" style="color: red;">{{ errorMessage }}</p>
+      </ng-container>
+
+      <!-- Display the fetched quote -->
+      <ng-container *ngIf="!loading && !errorMessage">
+        <span class="quote" style="font-size: 18px;">
+          {{ quote || 'No note available.' }}
+        </span>
+      </ng-container>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="accent" (click)="getQuote()">New Quote</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
